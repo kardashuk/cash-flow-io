@@ -210,7 +210,17 @@
       this.paint(x + 1, y);
       this.paint(x, y + 1);
       this.paint(x, y - 1);
+      if (this.check()){
+        alert('Poluchilos!!!');
+      }
     };
+    HomeComponent.prototype.check = function(){      
+      return this.map.reduce((r, row, x) => {
+        return r && row.reduce((rr, cel, y) => {
+          return rr && ((x + y) % 2) !== cel;
+        }, true);
+      }, true);
+    }
     HomeComponent.prototype.paint = function (x, y) {
       if (x >= 0 && x < 8 && y >= 0 && y < 8) {
         this.map[x][y] = this.map[x][y] ? 0 : 1;
