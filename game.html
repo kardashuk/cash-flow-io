@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>angular4 example</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="googlebot" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+  <script
+    type="text/javascript"
+    src="/js/lib/dummy.js"
+
+  ></script>
+
+  <script type="text/javascript" src="https://unpkg.com/core-js@2.4.1/client/shim.min.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/zone.js@0.8.5/dist/zone.min.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/rxjs@5.2.0/bundles/Rx.min.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/@angular/core@4.0.1/bundles/core.umd.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/@angular/common@4.0.1/bundles/common.umd.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/@angular/compiler@4.0.1/bundles/compiler.umd.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/@angular/platform-browser@4.0.1/bundles/platform-browser.umd.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/@angular/platform-browser-dynamic@4.0.1/bundles/platform-browser-dynamic.umd.js"></script>
+
+
+  <style id="compiled-css" type="text/css">
+
+      .table{
+          display: table;
+          width:240px;
+      }
+      .row {
+          display: table-row;
+      }
+      .cell {
+          width: 30px;
+          height: 30px;
+          border: 1px solid #eee;
+          display: table-cell;
+      }
+
+      .cell--black {
+          background-color: #222222;
+      }
+      .cell--black:hover {
+          background-color: #7f7f7f;
+      }
+
+      .cell:hover {
+          background-color: #eee;
+      }
+
+      /* EOS */
+  </style>
+
+  <style type="text/css">
+      :root {
+          color-scheme: light;
+      }
+  </style>
+
+  <script id="insert"></script>
+
+  <script src="/js/stringify.js?e5d2de3ec6d46c6bd837e96e9e645cb40a8052e3" charset="utf-8"></script>
+  <script>
+    const customConsole = (w) => {
+      const pushToConsole = (payload, type) => {
+        w.parent.postMessage({
+          console: {
+            payload: stringify(payload),
+            type:    type
+          }
+        }, "*")
+      }
+
+      w.onerror = (message, url, line, column) => {
+        // the line needs to correspond with the editor panel
+        // unfortunately this number needs to be altered every time this view is changed
+        line = line - 70
+        if (line < 0){
+          pushToConsole(message, "error")
+        } else {
+          pushToConsole(`[${line}:${column}] ${message}`, "error")
+        }
+      }
+
+      let console = (function(systemConsole){
+        return {
+          log: function(){
+            let args = Array.from(arguments)
+            pushToConsole(args, "log")
+            systemConsole.log.apply(this, args)
+          },
+          info: function(){
+            let args = Array.from(arguments)
+            pushToConsole(args, "info")
+            systemConsole.info.apply(this, args)
+          },
+          warn: function(){
+            let args = Array.from(arguments)
+            pushToConsole(args, "warn")
+            systemConsole.warn.apply(this, args)
+          },
+          error: function(){
+            let args = Array.from(arguments)
+            pushToConsole(args, "error")
+            systemConsole.error.apply(this, args)
+          },
+          system: function(arg){
+            pushToConsole(arg, "system")
+          },
+          clear: function(){
+            systemConsole.clear.apply(this, {})
+          },
+          time: function(){
+            let args = Array.from(arguments)
+            systemConsole.time.apply(this, args)
+          },
+          assert: function(assertion, label){
+            if (!assertion){
+              pushToConsole(label, "log")
+            }
+
+            let args = Array.from(arguments)
+            systemConsole.assert.apply(this, args)
+          }
+        }
+      }(window.console))
+
+      window.console = { ...window.console, ...console }
+
+      console.system("Running fiddle")
+    }
+
+    if (window.parent){
+      customConsole(window)
+    }
+  </script>
+</head>
+<body>
+<my-app></my-app>
+</body>
+
+<script type="text/javascript">
+  var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+  };
+  var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+      if (ar || !(i in from)) {
+        if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+        ar[i] = from[i];
+      }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+  };
+  var _a = ng.core, Component = _a.Component, NgModule = _a.NgModule;
+  var CommonModule = ng.common.CommonModule;
+  var HomeComponent = /** @class */ (function () {
+    function HomeComponent() {
+      this.map = [
+        [0, 1, 0, 1, 0, 1, 0, 1],
+        [1, 0, 1, 0, 1, 0, 1, 0],
+        [0, 1, 0, 1, 0, 1, 0, 1],
+        [1, 0, 1, 0, 1, 0, 1, 0],
+        [0, 1, 0, 1, 0, 1, 0, 1],
+        [1, 0, 1, 0, 1, 0, 1, 0],
+        [0, 1, 0, 1, 0, 1, 0, 1],
+        [1, 0, 1, 0, 1, 0, 1, 0]
+      ];
+      this.history = [
+        [
+          [0, 1, 0, 1, 0, 1, 0, 1],
+          [1, 0, 1, 0, 1, 0, 1, 0],
+          [0, 1, 0, 1, 0, 1, 0, 1],
+          [1, 0, 1, 0, 1, 0, 1, 0],
+          [0, 1, 0, 1, 0, 1, 0, 1],
+          [1, 0, 1, 0, 1, 0, 1, 0],
+          [0, 1, 0, 1, 0, 1, 0, 1],
+          [1, 0, 1, 0, 1, 0, 1, 0]
+        ]
+      ];
+    }
+    HomeComponent.prototype.clean = function () {
+      this.map = [
+        [0, 1, 0, 1, 0, 1, 0, 1],
+        [1, 0, 1, 0, 1, 0, 1, 0],
+        [0, 1, 0, 1, 0, 1, 0, 1],
+        [1, 0, 1, 0, 1, 0, 1, 0],
+        [0, 1, 0, 1, 0, 1, 0, 1],
+        [1, 0, 1, 0, 1, 0, 1, 0],
+        [0, 1, 0, 1, 0, 1, 0, 1],
+        [1, 0, 1, 0, 1, 0, 1, 0]
+      ];
+      this.history = [];
+      this.history.push(__spreadArray([], this.map.map(function (row) { return __spreadArray([], row, true); }), true));
+    };
+    HomeComponent.prototype.undo = function () {
+      this.map = this.history.pop();
+    };
+    HomeComponent.prototype.onClick = function (x, y) {
+      this.history.push(__spreadArray([], this.map.map(function (row) { return __spreadArray([], row, true); }), true));
+      this.paint(x - 1, y);
+      this.paint(x + 1, y);
+      this.paint(x, y + 1);
+      this.paint(x, y - 1);
+    };
+    HomeComponent.prototype.paint = function (x, y) {
+      if (x >= 0 && x < 8 && y >= 0 && y < 8) {
+        this.map[x][y] = this.map[x][y] ? 0 : 1;
+      }
+    };
+    HomeComponent = __decorate([
+      Component({
+        selector: 'my-app',
+        template: "\n  \t<div>\n      <button (click)=\"clean()\">Clean</button>\n      <button (click)=\"undo()\" *ngIf=\"history.length > 1\">Undo</button>\n    </div>\n\t\t<div class=\"table\">\n    <div *ngFor=\"let row of map; let x = index;\" class=\"row\">\n    <div *ngFor=\"let cell of row; let y = index;\" \n      \t\tclass=\"cell\"\n           [class.cell--black]=\"cell\"\n           (click)=\"onClick(x,y)\">\n      </div>\n      </div>\n      </div>\n  ",
+      })
+    ], HomeComponent);
+    return HomeComponent;
+  }());
+  var BrowserModule = ng.platformBrowser.BrowserModule;
+  var AppModule = /** @class */ (function () {
+    function AppModule() {
+    }
+    AppModule = __decorate([
+      NgModule({
+        imports: [BrowserModule, CommonModule],
+        declarations: [HomeComponent],
+        bootstrap: [HomeComponent]
+      })
+    ], AppModule);
+    return AppModule;
+  }());
+  var platformBrowserDynamic = ng.platformBrowserDynamic.platformBrowserDynamic;
+  platformBrowserDynamic().bootstrapModule(AppModule);
+
+</script>
+
+<script>
+  // tell the embed parent frame the height of the content
+  if (window.parent && window.parent.parent){
+    window.parent.parent.postMessage(["resultsFrame", {
+      height: document.body.getBoundingClientRect().height,
+      slug: ""
+    }], "*")
+  }
+
+  // always overwrite window.name, in case users try to set it manually
+  window.name = "result"
+</script>
+
+<script>
+  const allLines = []
+  const cssElement = document.querySelector("#compiled-css")
+
+  window.addEventListener("message", (message) => {
+    if (message.data.console){
+      let insert = document.querySelector("#insert")
+      allLines.push(message.data.console.payload)
+      insert.innerHTML = allLines.join(";\r")
+
+      let result = eval.call(null, message.data.console.payload)
+      if (result !== undefined){
+        console.log(result)
+      }
+    }
+
+    if (message.data.css){
+      cssElement.textContent = message.data.css.payload
+    }
+
+    if (message.data.html){
+      document.body.innerHTML = message.data.html.payload
+    }
+  })
+</script>
+</html>
